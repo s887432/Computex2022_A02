@@ -1,24 +1,3 @@
-diff --git a/board/microchip/sam9x60ek/genimage.cfg b/board/microchip/sam9x60ek/genimage.cfg
-index 0fb6349..9ac2a1c 100644
---- a/board/microchip/sam9x60ek/genimage.cfg
-+++ b/board/microchip/sam9x60ek/genimage.cfg
-@@ -3,13 +3,10 @@
- image boot.vfat {
- 	vfat {
- 		files = {
--			"sam9x60ek.itb",
- 			"boot.bin",
--			"u-boot.bin"
--		}
--
--		file uboot.env {
--			image = "uboot-env.bin"
-+			"at91-sam9x60eksd.dtb",
-+			"zImage",
-+			"../../../buildroot-external-microchip/board/microchip/sam9x60ek/logo.bmp"
- 		}
- 	}
- 	size = 16M
 diff --git a/board/microchip/sam9x60ek/linux_dashboard_nf.config b/board/microchip/sam9x60ek/linux_dashboard_nf.config
 new file mode 100644
 index 0000000..e37da78
