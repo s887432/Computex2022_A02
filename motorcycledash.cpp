@@ -72,14 +72,12 @@ static int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_mes
     int i;
     unsigned char* payloadptr;
 	
-
     payloadptr = (unsigned char*)message->payload;
-    for(i=0; i<message->payloadlen; i++)
-    {
-		mqttRevBuf[i] = *payloadptr++;
-        //putchar(*payloadptr++);
-    }
-    //putchar('\n');
+
+	mqttRevBuf[0] = payloadptr[0];
+	mqttRevBuf[1] = payloadptr[4];
+	mqttRevBuf[2] = payloadptr[8];
+	mqttRevBuf[3] = payloadptr[12];
 
 	mqttRevValided = true;
 
@@ -1066,14 +1064,7 @@ int main(int argc, char** argv)
 			
 	    	while(1) {
 
-#if 1
-				if( mqttRevValided )
-					std::cout << "MQTT: 1" << std::endl;
-				else
-					std::cout << "MQTT: 0" << std::endl;
-#endif
 				if( mqttRevValided ) {
-
 					val.needle_index = mqttRevBuf[0];
 					val.speed_index = (mqttRevBuf[0]*15)/15;
 					val.headlight = (LIGHT)mqttRevBuf[1];
@@ -1083,7 +1074,7 @@ int main(int argc, char** argv)
 					mqttRevValided = false;
 				}
 
-				usleep(100*1000);
+				usleep(10*1000);
 			}
 	    	MQTTClient_disconnect(client, 10000);
 	    	MQTTClient_destroy(&client);
@@ -1262,6 +1253,8 @@ int main(int argc, char** argv)
             {
                 low_pri_q.push([&]()
                 {
+					//std::cout << motoValue.turnRightlight << ":" << motoValue.turnLeftlight << std::endl;
+
 					if( motoValue.turnRightlight == LIGHT_OFF ) {
 						right_blinkPtr->show();
 					} else {
